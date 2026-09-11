@@ -1,4 +1,4 @@
-# Harness GitHub 登录插件
+# dsh-github-auth：Harness GitHub 登录插件
 
 简体中文 | [English](README.md)
 
@@ -8,11 +8,51 @@
 仓库和 Release 保持 **Private**。仅你及获得访问权限的协作者可以下载。
 完成验收后也不会自动公开，由仓库所有者手动修改可见性；不发布 npm。
 
-## 安装
+## 当前状态
+
+`0.1.0-beta.1` 目前以源码形式提供，**尚未发布预构建 GitHub Release**。
+现在可按下方步骤从源码构建并安装；仅仓库所有者和有访问权限的协作者可以获取。
+
+Windows 已完成 22 项单元/接口测试、5 个官方 Profile 安装场景、真实 Copilot 授权与
+开发任务、私有仓库操作及重启恢复。真实开发任务使用 Claude Sonnet 5 通过验收；
+具体模型和 Windows 沙箱限制见 [验收记录](VALIDATION.md)。
+
+三平台自动测试配置以[待启用模板](ci/README.md)提供，尚未运行，不能视为已通过。
+首个 Release 仍需等待这些检查完成。
+
+## 环境要求
 
 需要 Node.js 24 以上和已运行的官方 Harness 网页版。
 兼容基线为 Harness `0.1.5-alpha.1`、pi-ai `0.85.1`。
 仓库授权还需要在运行 Harness 的电脑安装 Git、GitHub CLI，并加入 PATH。
+
+## 现在安装：从源码构建
+
+先使用有本私有仓库访问权限的账号登录 GitHub CLI，然后执行：
+
+```sh
+gh repo clone Jacky521L/dsh-github-auth
+cd dsh-github-auth
+npm ci
+npm run verify
+```
+
+这会完成类型检查、构建、测试和打包，在 `dist/` 中生成两个 `.tgz` 安装包及
+`SHA256SUMS.txt`。停止目标 Harness，保持与平时启动时相同的 `DSH_HOME` 和环境，
+安装需要的一个或两个插件：
+
+```sh
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.1.tgz
+```
+
+再使用原来的启动入口重启同一个 Harness，即可看到登录卡片。安装与账号授权是
+两个步骤，授权方法见下文。请保留源码目录和 `dist/` 安装包；移动路径后需要重新
+安装。已有源码目录时，无需再执行克隆命令。
+
+## Release 发布后的预构建包安装
+
+下面的方式需要 Releases 页面已经提供两个 `.tgz` 文件；当前请使用上面的源码构建方式。
 
 1. 登录有仓库访问权限的 GitHub 账号，从 `v0.1.0-beta.1` Release 下载插件 `.tgz`
    和 `SHA256SUMS.txt`。不要下载 Source code ZIP 作为插件，不需要解压安装包。
@@ -53,6 +93,13 @@ GitHub CLI 优先保存到系统凭据存储，不可用时可能回退到本地
 文件和命令沿用 Harness 的默认权限机制。沙箱拒绝会被报告，不会自动绕过。
 推送和修改 PR 需要属于用户授权任务；凭据不会发送给模型或保存在插件包中。
 
+## 插件如何生效
+
+官方安装命令会将插件登记到所选 `DSH_HOME` 下 web Profile 的依赖和插件列表。
+Harness 启动时读取插件声明，加载后端服务和网页界面：Copilot 登录卡片出现在
+「设置 → 模型」，仓库登录卡片出现在「设置 → GitHub」。不需要 Electron 桌面软件，
+也不依赖 GPT 登录插件。安装到了不同的 `DSH_HOME`，就不会影响你平时启动的那套环境。
+
 ## 升级和卸载
 
 停止 Harness，使用相同安装命令添加新版包，再重启。
@@ -86,8 +133,9 @@ npm ci
 npm run verify
 ```
 
-自动完成类型检查、独立构建、测试和打包。CI 在 Windows/Linux/macOS 上运行无账号
-测试，不代表三平台都已完成真实账号授权。真实验收记录见 `VALIDATION.md`。
+自动完成类型检查、独立构建、测试和打包。CI 模板计划在 Windows/Linux/macOS 上运行
+无账号测试，当前尚未启用；维护者操作见 [CI 说明](ci/README.md)。这不代表三平台都已
+完成真实账号授权。真实验收记录见 `VALIDATION.md`。
 首版面向本机回环地址上的官方网页环境；仓库授权支持 github.com；企业 Copilot
 授权不标记为已验证。
 

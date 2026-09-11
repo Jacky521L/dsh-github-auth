@@ -1,4 +1,4 @@
-# Harness GitHub login plugins
+# dsh-github-auth
 
 [简体中文](README.zh.md) | English
 
@@ -13,6 +13,21 @@ This repository and its releases remain **Private**. Only the owner changes visi
 manually. No workflow publishes to npm or changes repository visibility. Each user
 signs in with their own accounts; credentials are never included in the packages.
 
+## Current status
+
+Version `0.1.0-beta.1` is available as source. **No prebuilt GitHub Release has been
+published yet.** Use the source-build installation below. Private repository
+access is required for the owner and invited collaborators.
+
+Windows acceptance passed: 22 unit/contract tests, five official-profile
+installation scenarios, real Copilot authorization and development-task
+verification, private repository operations, and restart recovery. The real task
+passed with Claude Sonnet 5; model-specific and Windows sandbox limitations are
+documented in [VALIDATION.md](VALIDATION.md).
+
+Cross-platform CI is provided as a [template](ci/README.md), pending activation and
+remote execution. It is not reported as passed. Release remains gated on those checks.
+
 ## Requirements
 
 - Node.js 24 or newer; a working official Harness web installation.
@@ -24,7 +39,36 @@ signs in with their own accounts; credentials are never included in the packages
 The plugin build does not bundle or replace Harness, React, Git or GitHub CLI.
 The two authorizations are separate; one does not grant the other's permissions.
 
-## Install release packages
+## Build and install now
+
+With GitHub CLI signed in to an account that can access this private repository:
+
+```sh
+gh repo clone Jacky521L/dsh-github-auth
+cd dsh-github-auth
+npm ci
+npm run verify
+```
+
+This checks types, builds both plugins, runs the tests and creates two `.tgz`
+packages plus `SHA256SUMS.txt` in `dist/`. Stop the target Harness instance, keep
+its usual `DSH_HOME` and launch environment, then install either or both packages:
+
+```sh
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.1.tgz
+```
+
+Restart that same Harness instance with its normal startup command. The two
+settings cards should appear; account authorization is a separate step below.
+Keep this checkout and its `dist/` archives at stable paths. Reinstall from the
+new location if you move them. The first command is unnecessary if you already
+have the source checkout.
+
+## Install prebuilt packages after a Release is published
+
+This alternative becomes available when the repository's Releases page has the
+two `.tgz` assets. Until then, use the source-build instructions above.
 
 1. Download the desired `.tgz` files and `SHA256SUMS.txt` from this repository's
    `v0.1.0-beta.1` Release. During private testing you need repository access and a
@@ -66,6 +110,15 @@ Both cards offer English/Chinese, cancellation and retry. Repository sign-out
 explicitly confirms that it also removes the shared machine GitHub CLI login for
 the displayed account; Copilot sign-out removes only the Harness Copilot grant.
 Neither operation revokes the provider's grant globally.
+
+## How the plugins load
+
+The official `dsh plugin --profile web add` command registers the package as a
+dependency and bundle of the web profile under the selected `DSH_HOME`. On startup,
+Harness reads its bundle patch, starts the plugin's backend service and loads its
+web client. Copilot adds a card in Settings → Models; repository authorization
+adds Settings → GitHub. No Electron application or ChatGPT login plugin is required.
+Installing into another `DSH_HOME` does not affect the instance you normally run.
 
 ## Repository work through the agent
 
@@ -125,10 +178,12 @@ The HTTP request contract is shared in source and strictly checks action fields;
 transport is Harness's authenticated Connection fetch extension. No generated
 Typert descriptors or copied third-party prebuilt bundles are required.
 
-CI builds/tests/packs on Windows, Linux and macOS. These jobs use fake authorization
+The CI template builds/tests/packs on Windows, Linux and macOS. These jobs use fake authorization
 providers and child processes, not a real Copilot subscription. See `VALIDATION.md`
 for actual manual acceptance evidence. A package build is not a successful live
 authorization or model test.
+
+The template is not active yet; see [CI activation instructions](ci/README.md).
 
 To run the official-profile installation matrix, set `DSH_CLI_PATH` to the pinned
 Harness installation's `lib/bin.js` and run `node tests/integration.mjs`. This creates

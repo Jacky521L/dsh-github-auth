@@ -17,7 +17,7 @@ success is inferred from mocked tests.
 | Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
 | Restart credentials/model/history | PASS, both logins, model selection, original session and successful follow-up model response |
 | Browser/log/archive credential exclusion | PASS, archive allowlist/path scan, exact credential comparison against sources, archives, logs, session projection and HTTP responses; visible page pattern check |
-| GitHub Actions Windows/Linux/macOS | Pending remote CI |
+| GitHub Actions Windows/Linux/macOS | Pending; template in ci/github-actions.yml is not activated |
 
 The owner will make the repository public manually, if desired. Development,
 validation and the first Release must not change visibility.
@@ -43,8 +43,9 @@ validation and the first Release must not change visibility.
   by the fixture content assertion.
 - The delivery repository `Jacky521L/dsh-github-auth` was created and verified
   PRIVATE. Its initial push was rejected because the CLI grant lacks `workflow`
-  scope for `.github/workflows/ci.yml`; browser confirmation of the supplemental
-  CLI authorization remains pending. No Release exists.
+  scope for `.github/workflows/ci.yml`. The source upload therefore stores the
+  configuration as an inactive template at `ci/github-actions.yml`. Activating
+  the workflow still requires appropriate authorization. No Release exists.
 - Installation matrix: both packages 200/200; repeated install plus restart 200/200;
   Copilot removed 404/200; repository removed and Copilot installed 200/404; both
   uninstalled 404/404. No duplicate bundle registrations.
