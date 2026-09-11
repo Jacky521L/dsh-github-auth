@@ -1,0 +1,12 @@
+import { spawn } from 'node:child_process';
+import { credentialConfig, executable } from './process.ts';
+const [kind, ...args] = process.argv.slice(2);
+if (kind !== 'git' && kind !== 'gh') throw new Error('Usage: repo-command.js git|gh <arguments>');
+if (kind === 'gh' && args[0] === 'auth') throw new Error('Manage GitHub authentication in Harness settings. Authentication tokens must not enter the conversation.');
+const gh = executable('gh'); const file = executable(kind);
+if (!gh || !file) throw new Error('Install Git and GitHub CLI, add them to PATH, then restart Harness.');
+const child = spawn(file, kind === 'git' ? [...credentialConfig(gh), ...args] : args, { shell: false, windowsHide: true, stdio: 'inherit' });
+child.on('error', error => { process.stderr.write(error.message + '\n'); process.exitCode = 1; });
+child.on('exit', code => { process.exitCode = code ?? 1; });
+process.on('SIGTERM', () => child.kill());
+process.on('SIGINT', () => child.kill('SIGINT'));

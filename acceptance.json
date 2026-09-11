@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0-beta.1",
+  "visibility": "private",
+  "checks": {
+    "unit": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "installationMatrix": "passed",
+    "copilotAuthorization": "pending",
+    "copilotTask": "pending",
+    "repositoryTask": "pending",
+    "restart": "pending",
+    "credentialExclusion": "pending",
+    "ciWindows": "pending",
+    "ciLinux": "pending",
+    "ciMacos": "pending"
+  },
+  "sha256": {}
+}
