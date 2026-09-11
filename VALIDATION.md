@@ -14,7 +14,7 @@ success is inferred from mocked tests.
 | Independent and combined installation/reinstall/uninstall | PASS, all 5 scenarios in tests/integration.mjs |
 | Real Copilot authorization | Pending user authorization |
 | Real model read/edit/check/report task | Pending |
-| Private repository clone/pull/push/draft PR | Pending |
+| Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
 | Restart credentials/model/history | Pending |
 | Browser/log/archive credential exclusion | Archive allowlist and credential/personal-path scan PASS; live credential checks pending authorization |
 | GitHub Actions Windows/Linux/macOS | Pending remote CI |
@@ -26,7 +26,8 @@ validation and the first Release must not change visibility.
 
 - Real official Harness web page loads the GitHub repository settings section.
 - Repository login invokes GitHub CLI, displays the real device code and official
-  authorization link. Copy-code button reports success. Human authorization is pending.
+  authorization link. Copy-code button reports success. Human CLI authorization
+  completed; the plugin reports the expected account, configured state and keyring source.
 - Copilot card renders in Settings → Models. A real native flow accepts an empty
   enterprise domain, returns a GitHub device code, and cancels cleanly: the code is
   cleared, the cancel outcome is visible, and login becomes available again.
@@ -35,6 +36,15 @@ validation and the first Release must not change visibility.
   a regression test verifies this behavior.
 - Real HTTP checks: missing authentication 401, foreign Origin 403, arbitrary
   non-Copilot credential key 400, authenticated status endpoints 200.
+- The dedicated private repository `Jacky521L/dsh-github-auth-test-20260911`
+  passed clone, fast-forward pull, test-branch push and draft PR creation through
+  the bundled `repo-command.js` entry. Draft PR: #1. No global Git credential
+  helper configuration was changed. Windows checkout line endings are normalized
+  by the fixture content assertion.
+- The delivery repository `Jacky521L/dsh-github-auth` was created and verified
+  PRIVATE. Its initial push was rejected because the CLI grant lacks `workflow`
+  scope for `.github/workflows/ci.yml`; explicit owner approval for that scope
+  expansion is pending. No Release exists.
 - Installation matrix: both packages 200/200; repeated install plus restart 200/200;
   Copilot removed 404/200; repository removed and Copilot installed 200/404; both
   uninstalled 404/404. No duplicate bundle registrations.

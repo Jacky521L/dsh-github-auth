@@ -8,7 +8,7 @@
     "installationMatrix": "passed",
     "copilotAuthorization": "pending",
     "copilotTask": "pending",
-    "repositoryTask": "pending",
+    "repositoryTask": "passed",
     "restart": "pending",
     "credentialExclusion": "pending",
     "ciWindows": "pending",
