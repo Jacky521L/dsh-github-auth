@@ -6,14 +6,17 @@
     "typecheck": "passed",
     "build": "passed",
     "installationMatrix": "passed",
-    "copilotAuthorization": "pending",
-    "copilotTask": "pending",
+    "copilotAuthorization": "passed",
+    "copilotTask": "passed",
     "repositoryTask": "passed",
-    "restart": "pending",
-    "credentialExclusion": "pending",
+    "restart": "passed",
+    "credentialExclusion": "passed",
     "ciWindows": "pending",
     "ciLinux": "pending",
     "ciMacos": "pending"
   },
-  "sha256": {}
+  "sha256": {
+    "dist/dsh-copilot-auth-0.1.0-beta.1.tgz": "a4abeaae616a3c91de033a27304b8217df22e24ebfdcf77874b052c78a573a44",
+    "dist/dsh-github-repo-auth-0.1.0-beta.1.tgz": "9121c75d420e43dce88ee103407196cbe3bce92eaf4e655ee5945b87ddbfa1df"
+  }
 }

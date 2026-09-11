@@ -75,6 +75,9 @@ dsh plugin --profile web remove dsh-github-repo-auth
 - 找不到 Git/gh：加入 PATH 后重启 Harness。
 - 环境变量凭据：GH_TOKEN/GITHUB_TOKEN 会覆盖 CLI 登录，先移除覆盖再使用网页登录。
 - 私有下载显示 404：使用有此仓库权限的账号登录 GitHub。
+- Windows 的 `node --test` 可能因原生沙箱限制子进程而出现 `spawn EPERM`。
+  请检查具体命令，必要时通过 Harness 的一次性审批执行；登录插件不更改沙箱权限。
+- 登录成功后，模型仍可能错误填写工具参数；已实测模型和限制详见 `VALIDATION.md`。
 
 ## 开发与验证
 

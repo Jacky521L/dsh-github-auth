@@ -12,11 +12,11 @@ success is inferred from mocked tests.
 | Unit/contract tests | PASS, 22 tests on Windows |
 | Windows clean official Harness profile | PASS, Harness 0.1.5-alpha.1 / pi-ai 0.85.1, independent home |
 | Independent and combined installation/reinstall/uninstall | PASS, all 5 scenarios in tests/integration.mjs |
-| Real Copilot authorization | Pending user authorization |
-| Real model read/edit/check/report task | Pending |
+| Real Copilot authorization | PASS, owner completed native device authorization; 17 account models matched |
+| Real model read/edit/check/report task | PASS, Copilot session, Claude Sonnet 5 repair and verification, 3 tests passed with one explicitly approved command |
 | Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
-| Restart credentials/model/history | Pending |
-| Browser/log/archive credential exclusion | Archive allowlist and credential/personal-path scan PASS; live credential checks pending authorization |
+| Restart credentials/model/history | PASS, both logins, model selection, original session and successful follow-up model response |
+| Browser/log/archive credential exclusion | PASS, archive allowlist/path scan, exact credential comparison against sources, archives, logs, session projection and HTTP responses; visible page pattern check |
 | GitHub Actions Windows/Linux/macOS | Pending remote CI |
 
 The owner will make the repository public manually, if desired. Development,
@@ -43,14 +43,36 @@ validation and the first Release must not change visibility.
   by the fixture content assertion.
 - The delivery repository `Jacky521L/dsh-github-auth` was created and verified
   PRIVATE. Its initial push was rejected because the CLI grant lacks `workflow`
-  scope for `.github/workflows/ci.yml`; explicit owner approval for that scope
-  expansion is pending. No Release exists.
+  scope for `.github/workflows/ci.yml`; browser confirmation of the supplemental
+  CLI authorization remains pending. No Release exists.
 - Installation matrix: both packages 200/200; repeated install plus restart 200/200;
   Copilot removed 404/200; repository removed and Copilot installed 200/404; both
   uninstalled 404/404. No duplicate bundle registrations.
 - A same-name unpublished archive may be cached by pnpm even after add --force.
   Development acceptance uses content-specific archive paths. Published versions
   must be immutable; upgrades must have a new version.
+- Human Copilot authorization completed independently of CLI authorization. The
+  account-model check returned 17 matching entries without returning grant tokens.
+- The Copilot session read the fixture files and repaired only `order.js`: price
+  is multiplied by quantity and the percentage discount applies to the subtotal.
+  Claude Sonnet 5 completed the repair and real verification; all 3 unchanged tests
+  passed and the model reported the result in Chinese.
+- Windows Harness confinement blocked Node's test runner with `spawn EPERM`.
+  The owner explicitly approved one `node --test` execution through Harness's
+  native approval UI. The session remained `workspace-write` throughout; no
+  executor, sandbox setting or Harness core file was patched by these plugins.
+- A prior GPT-5.3 Codex attempt repeatedly filled the optional escalation field
+  with the current sandbox mode, causing native validation failures. It did not
+  complete this task and is not marked as passing development acceptance.
+- The test deployment was stopped and restarted with process-identity checks.
+  Credential/settings hashes, session title, selected model and permission mode
+  survived. The browser reopened the original transcript, and the same Copilot
+  model correctly answered a follow-up about the changed file and 3 passing tests.
+- An exact comparison against the saved native credential values found no
+  matches in 49 source/archive/log/session-projection/API items. Public plugin
+  responses stayed token-free before and after restart. A rendered-page scan
+  found no GitHub-token or JWT patterns. Runtime credential storage itself is
+  excluded from source control and release packages.
 
 Runtime logs, device codes and temporary profiles stay in ignored `.runtime/` and
 are not uploaded. This record deliberately contains no live credential or device code.

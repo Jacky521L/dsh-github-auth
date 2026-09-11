@@ -107,6 +107,11 @@ a separate list slot, and never removes it or changes existing ChatGPT login.
 - Environment token shown: GH_TOKEN/GITHUB_TOKEN override CLI storage; remove the override to use browser login.
 - Invalid account: reconnect; grant organization SSO access if GitHub requires it.
 - Private download gives 404: sign in to a GitHub account with repository access.
+- Windows `node --test` may hit the native sandbox's child-process restriction
+  (`spawn EPERM`). Review the exact command and use Harness's one-time approval
+  if appropriate; the login plugins do not change sandbox permissions.
+- A model may fill native tool arguments incorrectly even after login succeeds.
+  Actual model/task validation and observed limitations are recorded in VALIDATION.md.
 
 ## Development and verification
 
