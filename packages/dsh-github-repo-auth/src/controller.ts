@@ -18,6 +18,11 @@ export function deviceNotice(text: string): Notice | undefined {
   const code = clean.match(/(?:one-time code|device code)[^A-Z0-9]*([A-Z0-9]{4}-[A-Z0-9]{4})/i)?.[1];
   return code ? { message: 'Enter this one-time device code on GitHub.', code, url: 'https://github.com/login/device' } : undefined;
 }
+export function loginFailure(stderr: string, code: number): string {
+  if (/context deadline exceeded|expired_token/i.test(stderr)) return 'GitHub device code expired or login timed out. Reconnect and authorize the new code.';
+  // Discard the old device-code transcript; retain only the actual CLI error line.
+  return errorText(stderr.trim().split(/\r?\n/).filter(line => !/one-time code|login\/device/i.test(line)).at(-1) ?? '') || `GitHub login failed (exit ${code}).`;
+}
 export class RepoController {
   private attempt?: { abort: AbortController; done: Promise<void> };
   private notice?: Notice;
@@ -65,7 +70,7 @@ export class RepoController {
           env, signal: attempt.abort.signal, timeout: 16 * 60 * 1000, input: '\n',
           onOutput: text => { transcript = (transcript + text).slice(-8192); this.notice = deviceNotice(transcript) ?? this.notice; },
         });
-        if (result.code) throw new PublicError(errorText(result.stderr) || `GitHub login failed (exit ${result.code}).`);
+        if (result.code) throw new PublicError(loginFailure(result.stderr, result.code));
         this.cached = undefined;
         const status = await this.status(true);
         if (!status.configured) throw new PublicError(status.error ?? 'GitHub authorization did not produce a usable login.');

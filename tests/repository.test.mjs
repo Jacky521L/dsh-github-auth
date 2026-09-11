@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setImmediate as tick } from 'node:timers/promises';
-import { RepoController, deviceNotice, parseAccount } from '../packages/dsh-github-repo-auth/lib/controller.js';
+import { RepoController, deviceNotice, parseAccount, loginFailure } from '../packages/dsh-github-repo-auth/lib/controller.js';
 import { credentialConfig, run } from '../packages/dsh-github-repo-auth/lib/process.js';
 
 const account = (login = 'test-user', extra = {}) => ({ code: 0, stderr: '', stdout: JSON.stringify({ hosts: { 'github.com': [{ active: true, state: 'success', login, tokenSource: 'keyring', oauthToken: 'never-return-this', ...extra }] } }) });
@@ -54,10 +54,14 @@ test('logout detects an account switch and only addresses the displayed account'
   assert.deepEqual(calls.find(call => call.args[1] === 'logout').args, ['auth', 'logout', '--hostname', 'github.com', '--user', 'test-user']);
 });
 test('invalid grant, expired device code and network errors do not become success', async () => {
-  for (const message of ['expired_token', 'Network connection failed', 'Organization authorization required']) {
+  for (const message of ['Device code expired', 'Network connection failed', 'Organization authorization required']) {
     const { controller } = setup(() => ({ code: 1, stdout: '', stderr: message })); await controller.begin(); await tick();
     const state = await controller.status(); assert.match(state.error, new RegExp(message)); assert.notEqual(state.outcome, 'authorized');
   }
+});
+test('expired device flow never displays the obsolete code in its error', () => {
+  const message = loginFailure('! First copy your one-time code: ABCD-EFGH\nOpen this URL: https://github.com/login/device\nfailed: context deadline exceeded', 1);
+  assert.match(message, /expired|timed out/); assert.equal(message.includes('ABCD-EFGH'), false);
 });
 test('helper is command scoped, host scoped and quotes spaces and apostrophes', () => {
   const args = credentialConfig("C:\\Tools\\GitHub CLI\\it's gh.exe");

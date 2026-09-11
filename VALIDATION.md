@@ -9,7 +9,7 @@ success is inferred from mocked tests.
 | --- | --- |
 | TypeScript strict check | PASS, TypeScript 5.9.3, Node 24.11.1 |
 | Host and browser build from source | PASS, both independent packages |
-| Unit/contract tests | PASS, 21 tests on Windows |
+| Unit/contract tests | PASS, 22 tests on Windows |
 | Windows clean official Harness profile | PASS, Harness 0.1.5-alpha.1 / pi-ai 0.85.1, independent home |
 | Independent and combined installation/reinstall/uninstall | PASS, all 5 scenarios in tests/integration.mjs |
 | Real Copilot authorization | Pending user authorization |
@@ -30,6 +30,9 @@ validation and the first Release must not change visibility.
 - Copilot card renders in Settings → Models. A real native flow accepts an empty
   enterprise domain, returns a GitHub device code, and cancels cleanly: the code is
   cleared, the cancel outcome is visible, and login becomes available again.
+- The first uncompleted repository device flow timed out as expected. Its error
+  handler now discards the obsolete code transcript and presents a retry message;
+  a regression test verifies this behavior.
 - Real HTTP checks: missing authentication 401, foreign Origin 403, arbitrary
   non-Copilot credential key 400, authenticated status endpoints 200.
 - Installation matrix: both packages 200/200; repeated install plus restart 200/200;
