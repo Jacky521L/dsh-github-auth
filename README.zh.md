@@ -5,13 +5,13 @@
 两个可独立安装的插件：`dsh-copilot-auth` 用于 Copilot 模型授权；
 `dsh-github-repo-auth` 用于 GitHub 仓库授权和 Agent 仓库操作。
 
-仓库和 Release 保持 **Private**。仅你及获得访问权限的协作者可以下载。
-完成验收后也不会自动公开，由仓库所有者手动修改可见性；不发布 npm。
+仓库和 Release 均为**公开**，任何人都可以下载安装包。插件不发布到 npm。
+每位用户需要使用自己的账号授权；安装包不包含凭据。
 
 ## 当前状态
 
-Copilot `0.1.0-beta.3` 与仓库授权 `0.1.0-beta.2` 已包含在私有 `v0.1.0-beta.3`
-预发布版本中；仅仓库所有者和有访问权限的协作者可以获取。
+Copilot `0.1.0-beta.3` 与仓库授权 `0.1.0-beta.2` 已包含在公开的 `v0.1.0-beta.3`
+预发布版本中。下载无需登录 GitHub；使用功能时仍需各自的账号权限。
 
 Windows 已完成 24 项单元/接口测试、5 个官方 Profile 安装场景、真实 Copilot 授权与
 开发任务、私有仓库操作及重启恢复。真实开发任务使用 Claude Sonnet 5 通过验收；
@@ -28,7 +28,7 @@ Windows 已完成 24 项单元/接口测试、5 个官方 Profile 安装场景�
 
 ## 现在安装：从源码构建
 
-先使用有本私有仓库访问权限的账号登录 GitHub CLI，然后执行：
+克隆公开仓库，然后执行：
 
 ```sh
 gh repo clone Jacky521L/dsh-github-auth
@@ -50,12 +50,12 @@ dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 两个步骤，授权方法见下文。请保留源码目录和 `dist/` 安装包；移动路径后需要重新
 安装。已有源码目录时，无需再执行克隆命令。
 
-## 从私有 Release 安装预构建包
+## 从公开 Release 安装预构建包
 
 请使用 `v0.1.0-beta.3` Release 获取修复后的 Copilot 插件。
 旧 beta.2 插件仍需手动启用 GitHub Copilot 提供方。
 
-1. 登录有仓库访问权限的 GitHub 账号，从对应 Release 下载插件 `.tgz`。
+1. 从对应 Release 下载插件 `.tgz`，无需登录 GitHub。
    不要下载 Source code ZIP 作为插件，不需要解压安装包。
 2. 停止 Harness，在下载目录执行，保持与平时启动相同的 `DSH_HOME` 和环境：
 
@@ -120,7 +120,7 @@ dsh plugin --profile web remove dsh-github-repo-auth
 - 网络错误：检查运行 Harness 的电脑能否访问 GitHub 和 Copilot 服务。
 - 找不到 Git/gh：加入 PATH 后重启 Harness。
 - 环境变量凭据：GH_TOKEN/GITHUB_TOKEN 会覆盖 CLI 登录，先移除覆盖再使用网页登录。
-- 私有下载显示 404：使用有此仓库权限的账号登录 GitHub。
+- Release 下载显示 404：检查版本标签和安装包文件名是否正确。
 - Windows 的 `node --test` 可能因原生沙箱限制子进程而出现 `spawn EPERM`。
   请检查具体命令，必要时通过 Harness 的一次性审批执行；登录插件不更改沙箱权限。
 - 登录成功后，模型仍可能错误填写工具参数；已实测模型和限制详见 `VALIDATION.md`。
@@ -137,5 +137,9 @@ npm run verify
 真实验收记录见 `VALIDATION.md`。
 首版面向本机回环地址上的官方网页环境；仓库授权支持 github.com；企业 Copilot
 授权不标记为已验证。
+
+发布公开预览版时，先提交已验证的修改，等待三平台 CI 通过，再给该提交打标签，
+使用 `gh release create --prerelease` 上传两个 `.tgz` 包。旧的 `release:private`
+脚本只适用于此前的私有测试版本，不能用于当前公开仓库。beta.3 Release 不附校验值文件。
 
 MIT 许可证；复用来源与版权说明见 `THIRD_PARTY_NOTICES.md`。

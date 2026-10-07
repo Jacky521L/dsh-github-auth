@@ -9,15 +9,15 @@ Two independently installable plugins for the official DeepSeek Harness web app:
 | `dsh-copilot-auth` | GitHub Copilot account authorization and account model-list checks |
 | `dsh-github-repo-auth` | GitHub CLI account authorization and repository command integration |
 
-This repository and its releases remain **Private**. Only the owner changes visibility,
-manually. No workflow publishes to npm or changes repository visibility. Each user
-signs in with their own accounts; credentials are never included in the packages.
+This repository and its releases are **public**. The packages are not published to
+npm. Each user signs in with their own accounts; credentials are never included in
+the packages.
 
 ## Current status
 
 Copilot `0.1.0-beta.3` and repository authorization `0.1.0-beta.2` are available
-in the private `v0.1.0-beta.3` prerelease. Private repository access is required
-for the owner and invited collaborators.
+in the public `v0.1.0-beta.3` prerelease. Anyone can download the archives;
+Copilot and repository access still depend on each user's own account.
 
 Windows acceptance passed: 24 unit/contract tests, five official-profile
 installation scenarios, real Copilot authorization and development-task
@@ -41,7 +41,7 @@ The two authorizations are separate; one does not grant the other's permissions.
 
 ## Build and install now
 
-With GitHub CLI signed in to an account that can access this private repository:
+Clone this public repository:
 
 ```sh
 gh repo clone Jacky521L/dsh-github-auth
@@ -65,14 +65,13 @@ Keep this checkout and its `dist/` archives at stable paths. Reinstall from the
 new location if you move them. The first command is unnecessary if you already
 have the source checkout.
 
-## Install prebuilt packages from a private Release
+## Install prebuilt packages from the public Release
 
 Use the `v0.1.0-beta.3` Release for the Copilot provider fix. The older beta.2
 Copilot package still requires manually enabling the provider.
 
-1. Download the desired `.tgz` files from the matching Release.
-   During private testing you need repository access and a
-   signed-in browser. Do not use GitHub's source-code ZIP as the plugin package.
+1. Download the desired `.tgz` files from the matching Release. No GitHub sign-in
+   is needed to download them. Do not use GitHub's source-code ZIP as the plugin package.
 2. Stop your Harness web process, then run the following in the download directory
    using the **same DSH_HOME and launch environment** as your regular Harness instance:
 
@@ -151,14 +150,14 @@ a separate list slot, and never removes it or changes existing ChatGPT login.
 ## Troubleshooting
 
 - Missing login card: confirm the web profile, DSH_HOME, restart and compatibility versions.
-- Copilot flow unavailable: add and enable GitHub Copilot on the Models page first.
+- Copilot flow unavailable: check that beta.3 is installed in the active web profile and restart Harness.
 - Expired code: cancel and reconnect; use only the code from the current attempt.
 - No models: reconnect to refresh the native account grant; check subscription and organization policy.
 - Network failure: verify the Harness host can reach GitHub and the Copilot service.
 - Missing CLI: add Git/gh to the host PATH and restart Harness, not just the browser.
 - Environment token shown: GH_TOKEN/GITHUB_TOKEN override CLI storage; remove the override to use browser login.
 - Invalid account: reconnect; grant organization SSO access if GitHub requires it.
-- Private download gives 404: sign in to a GitHub account with repository access.
+- Release download gives 404: check the tag and exact asset filename on the Releases page.
 - Windows `node --test` may hit the native sandbox's child-process restriction
   (`spawn EPERM`). Review the exact command and use Harness's one-time approval
   if appropriate; the login plugins do not change sandbox permissions.
@@ -187,9 +186,10 @@ Maintenance notes are in [ci/README.md](ci/README.md).
 To run the official-profile installation matrix, set `DSH_CLI_PATH` to the pinned
 Harness installation's `lib/bin.js` and run `node tests/integration.mjs`. This creates
 temporary homes under `.runtime/` and uses random loopback ports without accounts.
-For a private release, complete `acceptance.json` with actual results and package
-hashes, commit and tag the validated revision, then use `npm run release:private`.
-The release command refuses incomplete acceptance or a public repository.
+For a public prerelease, commit the validated revision, wait for all three CI jobs,
+tag that commit, and upload both `.tgz` packages with `gh release create --prerelease`.
+The legacy `release:private` helper is for the earlier private beta and cannot
+publish from this public repository. No checksum file is attached to beta.3.
 Never replace an already published version's archive; use a new version for upgrades.
 
 MIT; see LICENSE and THIRD_PARTY_NOTICES.md for attribution.

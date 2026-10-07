@@ -13,5 +13,5 @@ The Harness model selector is limited to models in the current Copilot account g
 Remove: `dsh plugin --profile web remove dsh-copilot-auth`, then restart.
 Removal retains credentials; sign out first if desired.
 
-Full English and Chinese instructions are in the private `Jacky521L/dsh-github-auth`
+Full English and Chinese instructions are in the public `Jacky521L/dsh-github-auth`
 repository's README.md and README.zh.md. Model access still depends on your account.

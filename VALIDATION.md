@@ -1,6 +1,6 @@
 # Validation record
 
-Version: 0.1.0-beta.2. Release visibility: PRIVATE.
+Version: 0.1.0-beta.2. Release visibility at validation: PRIVATE; the repository is now PUBLIC.
 
 This file distinguishes completed checks from pending acceptance. No real-account
 success is inferred from mocked tests.

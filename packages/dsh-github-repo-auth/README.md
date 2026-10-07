@@ -14,4 +14,4 @@ command scoped. No global Git configuration is changed. GitHub CLI owns credenti
 storage and may fall back from the system keychain to a local configuration file.
 
 Remove: `dsh plugin --profile web remove dsh-github-repo-auth`, then restart.
-Full bilingual instructions are in the private `Jacky521L/dsh-github-auth` repository.
+Full bilingual instructions are in the public `Jacky521L/dsh-github-auth` repository.

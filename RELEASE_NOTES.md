@@ -16,4 +16,4 @@ Assets: `dsh-copilot-auth-0.1.0-beta.3.tgz` and the unchanged
 `dsh-github-repo-auth-0.1.0-beta.2.tgz`. No checksum file is attached.
 
 Compatibility baseline: Harness 0.1.5-alpha.1 / pi-ai 0.85.1, Node.js 24+.
-This release remains in a PRIVATE repository.
+This prerelease is public. Each user must authorize with their own GitHub account.
