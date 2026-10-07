@@ -17,7 +17,7 @@ success is inferred from mocked tests.
 | Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
 | Restart credentials/model/history | PASS, both logins, model selection, original session and successful follow-up model response |
 | Browser/log/archive credential exclusion | PASS, archive allowlist/path scan, exact credential comparison against sources, archives, logs, session projection and HTTP responses; visible page pattern check |
-| GitHub Actions Windows/Linux/macOS | Running after workflow activation; results pending |
+| GitHub Actions Windows/Linux/macOS | PASS, run 37624518641, all three matrix jobs completed successfully |
 
 The owner will make the repository public manually, if desired. Development,
 validation and the first Release must not change visibility.
@@ -44,8 +44,8 @@ validation and the first Release must not change visibility.
 - The delivery repository `Jacky521L/dsh-github-auth` was created and verified
   PRIVATE. Its initial push was rejected because the CLI grant lacks `workflow`
   scope for `.github/workflows/ci.yml`. The owner later granted that scope and
-  the workflow is now active. Results remain pending until all matrix jobs pass.
-  No Release exists.
+  the workflow is now active. Run 37624518641 passed on Windows, Linux and macOS.
+  No Release existed when this acceptance result was recorded.
 - Installation matrix: both packages 200/200; repeated install plus restart 200/200;
   Copilot removed 404/200; repository removed and Copilot installed 200/404; both
   uninstalled 404/404. No duplicate bundle registrations.
