@@ -17,8 +17,8 @@ Windows 已完成 22 项单元/接口测试、5 个官方 Profile 安装场景�
 开发任务、私有仓库操作及重启恢复。真实开发任务使用 Claude Sonnet 5 通过验收；
 具体模型和 Windows 沙箱限制见 [验收记录](VALIDATION.md)。
 
-三平台自动测试配置以[待启用模板](ci/README.md)提供，尚未运行，不能视为已通过。
-首个 Release 仍需等待这些检查完成。
+三平台自动测试已启用，会在 Windows、Linux、macOS 上运行。首个 Release 仍需等待
+三个平台全部通过，结果记录在[验收记录](VALIDATION.md)。
 
 ## 环境要求
 
@@ -133,9 +133,9 @@ npm ci
 npm run verify
 ```
 
-自动完成类型检查、独立构建、测试和打包。CI 模板计划在 Windows/Linux/macOS 上运行
-无账号测试，当前尚未启用；维护者操作见 [CI 说明](ci/README.md)。这不代表三平台都已
-完成真实账号授权。真实验收记录见 `VALIDATION.md`。
+自动完成类型检查、独立构建、测试和打包。CI 会在 Windows/Linux/macOS 上运行无账号
+测试，维护说明见 [CI 说明](ci/README.md)。这不代表三平台都完成了真实账号授权。
+真实验收记录见 `VALIDATION.md`。
 首版面向本机回环地址上的官方网页环境；仓库授权支持 github.com；企业 Copilot
 授权不标记为已验证。
 

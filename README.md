@@ -25,8 +25,8 @@ verification, private repository operations, and restart recovery. The real task
 passed with Claude Sonnet 5; model-specific and Windows sandbox limitations are
 documented in [VALIDATION.md](VALIDATION.md).
 
-Cross-platform CI is provided as a [template](ci/README.md), pending activation and
-remote execution. It is not reported as passed. Release remains gated on those checks.
+Cross-platform CI is active on Windows, Linux and macOS. Release remains gated on
+all three jobs passing; current results are recorded in [VALIDATION.md](VALIDATION.md).
 
 ## Requirements
 
@@ -183,7 +183,7 @@ providers and child processes, not a real Copilot subscription. See `VALIDATION.
 for actual manual acceptance evidence. A package build is not a successful live
 authorization or model test.
 
-The template is not active yet; see [CI activation instructions](ci/README.md).
+Maintenance notes are in [ci/README.md](ci/README.md).
 
 To run the official-profile installation matrix, set `DSH_CLI_PATH` to the pinned
 Harness installation's `lib/bin.js` and run `node tests/integration.mjs`. This creates

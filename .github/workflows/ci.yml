@@ -1,4 +1,3 @@
-# Activation instructions: ci/README.md. This template does not run automatically.
 name: Build and test
 on: [push, pull_request, workflow_dispatch]
 permissions:
