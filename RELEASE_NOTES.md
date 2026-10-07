@@ -1,30 +1,19 @@
-# v0.1.0-beta.2
+# v0.1.0-beta.3
 
-The Copilot plugin now filters Harness's model selector to the models granted to
-the signed-in Copilot account. Login, reconnect and sign-out refresh the selector;
-if a former Copilot default is no longer available, Harness chooses an available
-fallback while preserving the host's required catalog contract.
+The Copilot plugin now enables the GitHub Copilot provider through its own
+Harness bundle. A user installing the plugin into an existing web profile can
+sign in and see account-authorized models without adding the provider in
+Settings first. The model selector continues to show only the intersection of
+the account grant and Harness's native model catalog, and refreshes when the
+grant changes.
 
-Packaging now removes stale archives before generating checksums, so each Release
-contains hashes only for its own version. The official-profile installation test
-reads the workspace version instead of embedding an old archive name.
+The standalone plugin was tested in fresh web profiles with no provider
+settings and with OpenAI Codex as the only configured provider. Both loaded
+the Copilot login card and the granted Copilot model. Type checking and all
+24 unit and contract tests passed.
 
-Both standalone packages are shipped at beta.2. The repository authorization
-plugin has no behavior change in this update.
-
-## Original beta capabilities
-
-Two standalone plugins add Copilot account sign-in and GitHub repository account
-sign-in to the official Harness web app. Install either package or both; bilingual
-controls include device-code copy, cancellation, retry and sign-out.
-
-The Copilot plugin uses Harness's native authorization and credential services.
-The repository plugin uses the existing GitHub CLI login and routes repository
-commands through Harness's ordinary command tools and permission mechanism.
+Assets: `dsh-copilot-auth-0.1.0-beta.3.tgz` and the unchanged
+`dsh-github-repo-auth-0.1.0-beta.2.tgz`. No checksum file is attached.
 
 Compatibility baseline: Harness 0.1.5-alpha.1 / pi-ai 0.85.1, Node.js 24+.
-Git and GitHub CLI are separate prerequisites for repository access.
-
-See README.md / README.zh.md for installation and VALIDATION.md for exact checks
-and limitations. This release remains in a PRIVATE repository. Only the owner may
-make the repository public manually.
+This release remains in a PRIVATE repository.

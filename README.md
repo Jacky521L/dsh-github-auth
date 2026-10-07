@@ -15,8 +15,9 @@ signs in with their own accounts; credentials are never included in the packages
 
 ## Current status
 
-Version `0.1.0-beta.2` is available as source and as a private prerelease. Private
-repository access is required for the owner and invited collaborators.
+Copilot `0.1.0-beta.3` and repository authorization `0.1.0-beta.2` are available
+in the private `v0.1.0-beta.3` prerelease. Private repository access is required
+for the owner and invited collaborators.
 
 Windows acceptance passed: 24 unit/contract tests, five official-profile
 installation scenarios, real Copilot authorization and development-task
@@ -54,7 +55,7 @@ packages plus `SHA256SUMS.txt` in `dist/`. Stop the target Harness instance, kee
 its usual `DSH_HOME` and launch environment, then install either or both packages:
 
 ```sh
-dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.3.tgz
 dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 ```
 
@@ -64,18 +65,19 @@ Keep this checkout and its `dist/` archives at stable paths. Reinstall from the
 new location if you move them. The first command is unnecessary if you already
 have the source checkout.
 
-## Install prebuilt packages from the private Release
+## Install prebuilt packages from a private Release
 
-1. Download the desired `.tgz` files and `SHA256SUMS.txt` from this repository's
-   `v0.1.0-beta.2` Release. During private testing you need repository access and a
+Use the `v0.1.0-beta.3` Release for the Copilot provider fix. The older beta.2
+Copilot package still requires manually enabling the provider.
+
+1. Download the desired `.tgz` files from the matching Release.
+   During private testing you need repository access and a
    signed-in browser. Do not use GitHub's source-code ZIP as the plugin package.
-2. Verify the SHA-256 hashes. In PowerShell use `Get-FileHash <file> -Algorithm SHA256`;
-   on Linux use `sha256sum <file>`; on macOS use `shasum -a 256 <file>`.
-3. Stop your Harness web process, then run the following in the download directory
+2. Stop your Harness web process, then run the following in the download directory
    using the **same DSH_HOME and launch environment** as your regular Harness instance:
 
 ```sh
-dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.3.tgz
 dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.2.tgz
 dsh web
 ```
@@ -88,11 +90,11 @@ can resolve their file references.
 
 ## Connect accounts
 
-**Copilot:** open Settings → Models, add/enable GitHub Copilot, and use the GitHub
+**Copilot:** the plugin enables the GitHub Copilot provider in the selected profile. Open Settings → Models and use the GitHub
 Copilot login card below the provider list. Copy the code, open the official link,
 authorize, and keep Harness running. For a regular account, submit a blank enterprise
 domain if the native flow asks for one. Check model access after login, then select
-a model using Harness's existing selector. Version beta.2 filters that selector to
+a model using Harness's existing selector. Version beta.3 filters that selector to
 the intersection of the stored account grant and native catalog and refreshes it
 when the grant changes. This does not prove a real model request succeeds. Reconnect
 to refresh an old grant and verify with a real task.

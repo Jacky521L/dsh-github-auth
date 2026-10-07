@@ -3,3 +3,9 @@
       name: '@deepseek-ai/dsh-authorization'
     - id: dsh-copilot-auth
       name: dsh-copilot-auth
+- id: llm-pi-ai
+  config:
+    providers:
+      github-copilot:
+        compat:
+          supportsStrictMode: true

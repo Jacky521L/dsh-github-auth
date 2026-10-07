@@ -10,7 +10,8 @@
 
 ## 当前状态
 
-`0.1.0-beta.2` 已提供源码和私有预发布安装包；仅仓库所有者和有访问权限的协作者可以获取。
+Copilot `0.1.0-beta.3` 与仓库授权 `0.1.0-beta.2` 已包含在私有 `v0.1.0-beta.3`
+预发布版本中；仅仓库所有者和有访问权限的协作者可以获取。
 
 Windows 已完成 24 项单元/接口测试、5 个官方 Profile 安装场景、真实 Copilot 授权与
 开发任务、私有仓库操作及重启恢复。真实开发任务使用 Claude Sonnet 5 通过验收；
@@ -36,12 +37,12 @@ npm ci
 npm run verify
 ```
 
-这会完成类型检查、构建、测试和打包，在 `dist/` 中生成两个 `.tgz` 安装包及
-`SHA256SUMS.txt`。停止目标 Harness，保持与平时启动时相同的 `DSH_HOME` 和环境，
+这会完成类型检查、构建、测试和打包，在 `dist/` 中生成两个 `.tgz` 安装包。
+停止目标 Harness，保持与平时启动时相同的 `DSH_HOME` 和环境，
 安装需要的一个或两个插件：
 
 ```sh
-dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.3.tgz
 dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 ```
 
@@ -51,14 +52,15 @@ dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 
 ## 从私有 Release 安装预构建包
 
-1. 登录有仓库访问权限的 GitHub 账号，从 `v0.1.0-beta.2` Release 下载插件 `.tgz`
-   和 `SHA256SUMS.txt`。不要下载 Source code ZIP 作为插件，不需要解压安装包。
-2. 比对 SHA-256：Windows 使用 `Get-FileHash <文件> -Algorithm SHA256`；
-   Linux 使用 `sha256sum <文件>`；macOS 使用 `shasum -a 256 <文件>`。
-3. 停止 Harness，在下载目录执行，保持与平时启动相同的 `DSH_HOME` 和环境：
+请使用 `v0.1.0-beta.3` Release 获取修复后的 Copilot 插件。
+旧 beta.2 插件仍需手动启用 GitHub Copilot 提供方。
+
+1. 登录有仓库访问权限的 GitHub 账号，从对应 Release 下载插件 `.tgz`。
+   不要下载 Source code ZIP 作为插件，不需要解压安装包。
+2. 停止 Harness，在下载目录执行，保持与平时启动相同的 `DSH_HOME` 和环境：
 
 ```sh
-dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.3.tgz
 dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.2.tgz
 dsh web
 ```
@@ -69,10 +71,10 @@ npx 安装可使用 `npx @deepseek-ai/dsh@0.1.5-alpha.1` 替代 `dsh`。
 
 ## 登录与使用
 
-**Copilot：**在「设置 → 模型」添加并启用 GitHub Copilot，使用提供方列表下的
+**Copilot：**插件会在所选 Profile 中启用 GitHub Copilot 提供方。在「设置 → 模型」使用提供方列表下的
 Copilot 登录卡片。复制设备码，打开官方授权页面，用自己的账号授权，保持 Harness
 运行。普通账号遇到企业域名提示可留空继续。授权后检查模型权限，再用 Harness 原有
-模型选择器选择模型。beta.2 会把选择器过滤为当前账号授权列表与原生目录的交集，
+模型选择器选择模型。beta.3 会把选择器过滤为当前账号授权列表与原生目录的交集，
 并在授权变化后刷新。模型检查不代替真实模型请求；旧授权需重新连接后刷新。
 
 **仓库：**打开「设置 → GitHub」。已有 GitHub CLI 账号会被识别，否则点击连接，
@@ -112,7 +114,7 @@ dsh plugin --profile web remove dsh-github-repo-auth
 ## 常见问题
 
 - 看不到卡片：检查安装到的 web Profile、DSH_HOME、版本，并重启。
-- Copilot 授权不可用：先添加并启用 GitHub Copilot 提供方。
+- Copilot 授权不可用：检查插件是否装入当前 web Profile，以及是否被其他 Profile 配置禁用。
 - 设备码过期：取消并重新连接，使用本次生成的新码。
 - 没有可用模型：重新授权刷新列表，检查 Copilot 订阅及组织策略。
 - 网络错误：检查运行 Harness 的电脑能否访问 GitHub 和 Copilot 服务。

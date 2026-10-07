@@ -3,8 +3,9 @@
 Standalone GitHub Copilot account sign-in for the official Harness web app.
 Requires Node.js 24+, Harness 0.1.5-alpha.1 / pi-ai 0.85.1.
 
-Install: `dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.2.tgz`, then restart.
-Open Settings → Models, add/enable GitHub Copilot, then use the Copilot login card.
+Install: `dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.3.tgz`, then restart.
+Open Settings → Models and use the Copilot login card. The plugin enables the
+GitHub Copilot provider in the profile; no separate provider setup is needed.
 普通 GitHub 账号可在企业域名提示中留空继续。界面支持中英文。
 Only the Copilot credential is managed; no ChatGPT sign-in dependency is installed.
 The Harness model selector is limited to models in the current Copilot account grant.
