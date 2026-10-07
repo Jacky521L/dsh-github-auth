@@ -17,7 +17,7 @@ success is inferred from mocked tests.
 | Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
 | Restart credentials/model/history | PASS, both logins, model selection, original session and successful follow-up model response |
 | Browser/log/archive credential exclusion | PASS, archive allowlist/path scan, exact credential comparison against sources, archives, logs, session projection and HTTP responses; visible page pattern check |
-| GitHub Actions Windows/Linux/macOS | PENDING for beta.2 commit; beta.1 run 37624719360 passed on the tagged revision |
+| GitHub Actions Windows/Linux/macOS | PASS, beta.2 run 37627435453; all three matrix jobs completed successfully |
 
 The owner will make the repository public manually, if desired. Development,
 validation and the first Release must not change visibility.
@@ -46,6 +46,8 @@ validation and the first Release must not change visibility.
   beta.2; the prior live clone/pull/push/draft-PR acceptance remains applicable.
 - Packaging deletes stale local archives before hashing; the beta.2 checksum file
   contains only the two beta.2 packages.
+- GitHub Actions run 37627435453 passed the same verify pipeline on Windows,
+  Linux and macOS for beta.2 implementation commit `7afea90`.
 
 ## Original beta.1 acceptance observations (2026-09-11)
 

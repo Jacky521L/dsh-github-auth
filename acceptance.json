@@ -11,9 +11,9 @@
     "repositoryTask": "passed",
     "restart": "passed",
     "credentialExclusion": "passed",
-    "ciWindows": "pending",
-    "ciLinux": "pending",
-    "ciMacos": "pending"
+    "ciWindows": "passed",
+    "ciLinux": "passed",
+    "ciMacos": "passed"
   },
   "sha256": {
     "dist/dsh-copilot-auth-0.1.0-beta.2.tgz": "ac5bf5e5b7a7a6454e5368d0fc2230c06a7c07fb92b3271f2a0e24896fc827ec",
