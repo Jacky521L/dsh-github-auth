@@ -15,11 +15,10 @@ signs in with their own accounts; credentials are never included in the packages
 
 ## Current status
 
-Version `0.1.0-beta.1` is available as source. **No prebuilt GitHub Release has been
-published yet.** Use the source-build installation below. Private repository
-access is required for the owner and invited collaborators.
+Version `0.1.0-beta.2` is available as source and as a private prerelease. Private
+repository access is required for the owner and invited collaborators.
 
-Windows acceptance passed: 22 unit/contract tests, five official-profile
+Windows acceptance passed: 24 unit/contract tests, five official-profile
 installation scenarios, real Copilot authorization and development-task
 verification, private repository operations, and restart recovery. The real task
 passed with Claude Sonnet 5; model-specific and Windows sandbox limitations are
@@ -55,8 +54,8 @@ packages plus `SHA256SUMS.txt` in `dist/`. Stop the target Harness instance, kee
 its usual `DSH_HOME` and launch environment, then install either or both packages:
 
 ```sh
-dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.1.tgz
-dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 ```
 
 Restart that same Harness instance with its normal startup command. The two
@@ -65,13 +64,10 @@ Keep this checkout and its `dist/` archives at stable paths. Reinstall from the
 new location if you move them. The first command is unnecessary if you already
 have the source checkout.
 
-## Install prebuilt packages after a Release is published
-
-This alternative becomes available when the repository's Releases page has the
-two `.tgz` assets. Until then, use the source-build instructions above.
+## Install prebuilt packages from the private Release
 
 1. Download the desired `.tgz` files and `SHA256SUMS.txt` from this repository's
-   `v0.1.0-beta.1` Release. During private testing you need repository access and a
+   `v0.1.0-beta.2` Release. During private testing you need repository access and a
    signed-in browser. Do not use GitHub's source-code ZIP as the plugin package.
 2. Verify the SHA-256 hashes. In PowerShell use `Get-FileHash <file> -Algorithm SHA256`;
    on Linux use `sha256sum <file>`; on macOS use `shasum -a 256 <file>`.
@@ -79,8 +75,8 @@ two `.tgz` assets. Until then, use the source-build instructions above.
    using the **same DSH_HOME and launch environment** as your regular Harness instance:
 
 ```sh
-dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.1.tgz
-dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.2.tgz
 dsh web
 ```
 
@@ -96,9 +92,10 @@ can resolve their file references.
 Copilot login card below the provider list. Copy the code, open the official link,
 authorize, and keep Harness running. For a regular account, submit a blank enterprise
 domain if the native flow asks for one. Check model access after login, then select
-a model using Harness's existing selector. The check intersects the stored account
-grant with the native catalog; it does not prove a real model request succeeds or
-refresh an old grant. Reconnect to refresh grants and verify with a real task.
+a model using Harness's existing selector. Version beta.2 filters that selector to
+the intersection of the stored account grant and native catalog and refreshes it
+when the grant changes. This does not prove a real model request succeeds. Reconnect
+to refresh an old grant and verify with a real task.
 
 **Repositories:** open Settings → GitHub. Existing GitHub CLI login is detected.
 Otherwise connect, copy the device code and authorize on github.com. Account status

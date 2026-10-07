@@ -1,6 +1,6 @@
 # Validation record
 
-Version: 0.1.0-beta.1. Release visibility: PRIVATE.
+Version: 0.1.0-beta.2. Release visibility: PRIVATE.
 
 This file distinguishes completed checks from pending acceptance. No real-account
 success is inferred from mocked tests.
@@ -9,20 +9,45 @@ success is inferred from mocked tests.
 | --- | --- |
 | TypeScript strict check | PASS, TypeScript 5.9.3, Node 24.11.1 |
 | Host and browser build from source | PASS, both independent packages |
-| Unit/contract tests | PASS, 22 tests on Windows |
+| Unit/contract tests | PASS, 24 tests on Windows |
 | Windows clean official Harness profile | PASS, Harness 0.1.5-alpha.1 / pi-ai 0.85.1, independent home |
 | Independent and combined installation/reinstall/uninstall | PASS, all 5 scenarios in tests/integration.mjs |
-| Real Copilot authorization | PASS, owner completed native device authorization; 17 account models matched |
+| Real Copilot authorization and filtered catalog | PASS, saved native grant restored after upgrade; RPC catalog contains exactly the 17 account models |
 | Real model read/edit/check/report task | PASS, Copilot session, Claude Sonnet 5 repair and verification, 3 tests passed with one explicitly approved command |
 | Private repository clone/pull/push/draft PR | PASS, bundled command wrapper, dedicated private fixture and draft PR |
 | Restart credentials/model/history | PASS, both logins, model selection, original session and successful follow-up model response |
 | Browser/log/archive credential exclusion | PASS, archive allowlist/path scan, exact credential comparison against sources, archives, logs, session projection and HTTP responses; visible page pattern check |
-| GitHub Actions Windows/Linux/macOS | PASS, run 37624518641, all three matrix jobs completed successfully |
+| GitHub Actions Windows/Linux/macOS | PENDING for beta.2 commit; beta.1 run 37624719360 passed on the tagged revision |
 
 The owner will make the repository public manually, if desired. Development,
 validation and the first Release must not change visibility.
 
-## Completed observations (2026-09-11)
+## Beta.2 targeted revalidation (2026-10-08)
+
+- Type checking, both independent builds, 24 unit/contract tests and release package
+  allowlist/path scanning passed locally on Windows with Node 24.11.1.
+- The clean official-profile matrix passed combined install, repeated install plus
+  restart, each independent install/removal state, and complete uninstall. The test
+  now reads the workspace version instead of embedding a beta.1 archive name.
+- Both beta.2 archives were installed into the retained real-account Harness home
+  from content-addressed paths. Copilot credentials, the selected Claude Sonnet 5
+  default and session data survived the upgrade.
+- An authenticated `session/modelCatalog` RPC returned 17 GitHub Copilot models,
+  all drawn from the saved account grant. The provider remained routable and its
+  default model remained available. The new unit tests also cover grant changes,
+  sign-out, another-provider fallback and the schema-required no-fallback state.
+- The runtime/API/package credential scan passed across 50 items. Copilot status
+  remained configured, unauthorized HTTP was rejected with 401, cross-origin with
+  403, and attempts to target a different provider credential with 400.
+- GitHub CLI was verified separately outside the test server's network sandbox as
+  logged in to `Jacky521L` with `repo` and `workflow` scopes. The in-server status
+  check cannot reach GitHub under that sandbox and reports an expected network-side
+  credential check failure. Repository authorization behavior did not change in
+  beta.2; the prior live clone/pull/push/draft-PR acceptance remains applicable.
+- Packaging deletes stale local archives before hashing; the beta.2 checksum file
+  contains only the two beta.2 packages.
+
+## Original beta.1 acceptance observations (2026-09-11)
 
 - Real official Harness web page loads the GitHub repository settings section.
 - Repository login invokes GitHub CLI, displays the real device code and official

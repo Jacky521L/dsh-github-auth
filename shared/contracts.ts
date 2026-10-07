@@ -21,6 +21,9 @@ export interface HttpContext {
   on(event: 'dispose', callback: () => unknown): unknown;
 }
 export interface CopilotContext extends HttpContext {
+  on(event: 'dispose', callback: () => unknown): unknown;
+  on(event: 'credentials/record-updated', callback: (key: string) => unknown): unknown;
+  llm: { emitAdaptersUpdated(): void };
   get?(service: string): unknown;
   authorization: {
     describe(key: string): { methods: readonly { id: string; label: string }[]; inFlight: boolean } | undefined;
@@ -32,8 +35,14 @@ export interface CopilotContext extends HttpContext {
     deleteRecord(key: string): Promise<void>;
     readRecord(key: string): Promise<{ kind: string; payload?: unknown } | undefined>;
   };
-  sessionController: { modelCatalog(signal: AbortSignal): Promise<{ groups: { id: string; models: { id: string; name?: string }[] }[] }> };
+  sessionController: { modelCatalog(signal?: AbortSignal): Promise<CopilotModelCatalog> };
   piAiOAuth?: unknown;
+}
+export interface CopilotModelCatalog {
+  readonly groups: readonly { readonly id: string; readonly name?: string; readonly models: readonly { readonly id: string; readonly name?: string }[] }[];
+  readonly default: { readonly provider: string; readonly model: string; readonly reasoningEffort?: string };
+  readonly routableProviders: readonly string[];
+  readonly [key: string]: unknown;
 }
 export interface BrowserContext {
   locale: { locale: string; getLocale?(): string };

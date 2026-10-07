@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import assert from 'node:assert/strict';
 import net from 'node:net';
+const { version } = JSON.parse(await readFile(resolve('package.json'), 'utf8'));
 const cli = process.env.DSH_CLI_PATH;
 if (!cli) throw new Error('Set DSH_CLI_PATH to Harness 0.1.5-alpha.1 lib/bin.js.');
 const base = resolve('.runtime', `integration-${Date.now()}`); await mkdir(base, { recursive: true });
@@ -14,7 +15,7 @@ const env = { ...process.env, DSH_HOME: resolve(base, 'home') };
 const report = [];
 const names = ['dsh-copilot-auth', 'dsh-github-repo-auth'];
 const archives = [];
-for (const name of names) { const source = resolve('dist', `${name}-0.1.0-beta.1.tgz`); const hash = createHash('sha256').update(await readFile(source)).digest('hex').slice(0, 12); const target = resolve(base, `${name}-${hash}.tgz`); await copyFile(source, target); archives.push(target); }
+for (const name of names) { const source = resolve('dist', `${name}-${version}.tgz`); const hash = createHash('sha256').update(await readFile(source)).digest('hex').slice(0, 12); const target = resolve(base, `${name}-${hash}.tgz`); await copyFile(source, target); archives.push(target); }
 async function command(args) {
   return new Promise((accept, reject) => {
     const child = spawn(process.execPath, [cli, 'plugin', '--profile', 'web', ...args], { env, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });

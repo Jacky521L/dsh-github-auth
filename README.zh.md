@@ -10,10 +10,9 @@
 
 ## 当前状态
 
-`0.1.0-beta.1` 目前以源码形式提供，**尚未发布预构建 GitHub Release**。
-现在可按下方步骤从源码构建并安装；仅仓库所有者和有访问权限的协作者可以获取。
+`0.1.0-beta.2` 已提供源码和私有预发布安装包；仅仓库所有者和有访问权限的协作者可以获取。
 
-Windows 已完成 22 项单元/接口测试、5 个官方 Profile 安装场景、真实 Copilot 授权与
+Windows 已完成 24 项单元/接口测试、5 个官方 Profile 安装场景、真实 Copilot 授权与
 开发任务、私有仓库操作及重启恢复。真实开发任务使用 Claude Sonnet 5 通过验收；
 具体模型和 Windows 沙箱限制见 [验收记录](VALIDATION.md)。
 
@@ -42,27 +41,25 @@ npm run verify
 安装需要的一个或两个插件：
 
 ```sh
-dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.1.tgz
-dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dist/dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dist/dsh-github-repo-auth-0.1.0-beta.2.tgz
 ```
 
 再使用原来的启动入口重启同一个 Harness，即可看到登录卡片。安装与账号授权是
 两个步骤，授权方法见下文。请保留源码目录和 `dist/` 安装包；移动路径后需要重新
 安装。已有源码目录时，无需再执行克隆命令。
 
-## Release 发布后的预构建包安装
+## 从私有 Release 安装预构建包
 
-下面的方式需要 Releases 页面已经提供两个 `.tgz` 文件；当前请使用上面的源码构建方式。
-
-1. 登录有仓库访问权限的 GitHub 账号，从 `v0.1.0-beta.1` Release 下载插件 `.tgz`
+1. 登录有仓库访问权限的 GitHub 账号，从 `v0.1.0-beta.2` Release 下载插件 `.tgz`
    和 `SHA256SUMS.txt`。不要下载 Source code ZIP 作为插件，不需要解压安装包。
 2. 比对 SHA-256：Windows 使用 `Get-FileHash <文件> -Algorithm SHA256`；
    Linux 使用 `sha256sum <文件>`；macOS 使用 `shasum -a 256 <文件>`。
 3. 停止 Harness，在下载目录执行，保持与平时启动相同的 `DSH_HOME` 和环境：
 
 ```sh
-dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.1.tgz
-dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.1.tgz
+dsh plugin --profile web add ./dsh-copilot-auth-0.1.0-beta.2.tgz
+dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.2.tgz
 dsh web
 ```
 
@@ -75,8 +72,8 @@ npx 安装可使用 `npx @deepseek-ai/dsh@0.1.5-alpha.1` 替代 `dsh`。
 **Copilot：**在「设置 → 模型」添加并启用 GitHub Copilot，使用提供方列表下的
 Copilot 登录卡片。复制设备码，打开官方授权页面，用自己的账号授权，保持 Harness
 运行。普通账号遇到企业域名提示可留空继续。授权后检查模型权限，再用 Harness 原有
-模型选择器选择模型。模型检查读取授权时保存的账号列表，不代替真实模型请求；
-权限变化后需重新连接。不会自动更改默认模型。
+模型选择器选择模型。beta.2 会把选择器过滤为当前账号授权列表与原生目录的交集，
+并在授权变化后刷新。模型检查不代替真实模型请求；旧授权需重新连接后刷新。
 
 **仓库：**打开「设置 → GitHub」。已有 GitHub CLI 账号会被识别，否则点击连接，
 复制设备码并在 GitHub 授权。连接成功后选择工作区，在会话中让 Agent 克隆、拉取、

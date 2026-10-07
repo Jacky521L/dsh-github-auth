@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setImmediate as tick } from 'node:timers/promises';
-import { CopilotController, COPILOT_KEY } from '../packages/dsh-copilot-auth/lib/controller.js';
+import { CopilotController, COPILOT_KEY, filterCopilotCatalog } from '../packages/dsh-copilot-auth/lib/controller.js';
 
 function setup(flow) {
   const records = new Map([['llm-pi-ai/openai-codex', { kind: 'grant', payload: { access_token: 'unrelated-secret' } }]]);
@@ -62,6 +62,37 @@ test('model check intersects account grant and native catalog without leaking cr
   records.set(COPILOT_KEY, { kind: 'grant', payload: { availableModelIds: ['a', 'unknown'], access_token: 'never-in-browser', refresh_token: 'also-secret' } });
   const view = await controller.checkModels(); assert.deepEqual(view.models, [{ id: 'a', name: 'Model A' }]);
   assert.equal(JSON.stringify(view).includes('secret'), false); assert.equal(JSON.stringify(view).includes('never-in-browser'), false);
+});
+
+test('model selector catalog contains only current Copilot grant models', () => {
+  const catalog = {
+    default: { provider: 'github-copilot', model: 'gpt-5.6-sol' },
+    routableProviders: ['github-copilot', 'other'],
+    failures: [],
+    groups: [
+      { id: 'github-copilot', name: 'Copilot', models: [{ id: 'gpt-5.6-sol' }, { id: 'gpt-5.6-luna' }] },
+      { id: 'other', name: 'Other', models: [{ id: 'other-model' }] },
+    ],
+  };
+  const first = filterCopilotCatalog(catalog, ['gpt-5.6-luna']);
+  assert.deepEqual(first.groups[0].models.map(model => model.id), ['gpt-5.6-luna']);
+  assert.deepEqual(first.default, { provider: 'github-copilot', model: 'gpt-5.6-luna' });
+  assert.deepEqual(first.groups[1], catalog.groups[1]);
+  assert.equal(catalog.groups[0].models.length, 2);
+  const changedGrant = filterCopilotCatalog(catalog, ['gpt-5.6-sol']);
+  assert.deepEqual(changedGrant.groups[0].models.map(model => model.id), ['gpt-5.6-sol']);
+  const signedOut = filterCopilotCatalog(catalog, undefined);
+  assert.deepEqual(signedOut.groups.map(group => group.id), ['other']);
+  assert.deepEqual(signedOut.routableProviders, ['other']);
+  assert.deepEqual(signedOut.default, { provider: 'other', model: 'other-model' });
+  const noFallback = filterCopilotCatalog({
+    default: { provider: 'github-copilot', model: 'gpt-5.6-sol' },
+    routableProviders: ['github-copilot'],
+    groups: [{ id: 'github-copilot', models: [{ id: 'gpt-5.6-sol' }] }],
+  }, undefined);
+  assert.deepEqual(noFallback.groups, []);
+  assert.deepEqual(noFallback.routableProviders, []);
+  assert.deepEqual(noFallback.default, { provider: 'github-copilot', model: 'gpt-5.6-sol' });
 });
 test('expired authorization and network failures remain distinguishable and retryable', async () => {
   let attempt = 0;

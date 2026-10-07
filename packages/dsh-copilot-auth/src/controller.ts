@@ -1,9 +1,31 @@
 // Authorization interaction design adapted from dsh-native-codex-oauth (MIT).
 // See THIRD_PARTY_NOTICES.md. No OpenAI route or credential is accepted here.
 import { randomUUID } from 'node:crypto';
-import { errorText, PublicError, type AuthView, type CopilotContext, type Prompt, type Notice } from '../../../shared/contracts.ts';
+import { errorText, PublicError, type AuthView, type CopilotContext, type CopilotModelCatalog, type Prompt, type Notice } from '../../../shared/contracts.ts';
 
 export const COPILOT_KEY = 'llm-pi-ai/github-copilot';
+/** The generic Harness catalog is advisory; Copilot's grant is account-specific. */
+export function filterCopilotCatalog(catalog: CopilotModelCatalog, availableModelIds: unknown): CopilotModelCatalog {
+  const allowed = new Set(Array.isArray(availableModelIds)
+    ? availableModelIds.filter((id): id is string => typeof id === 'string') : []);
+  const groups = catalog.groups.map(group => group.id === 'github-copilot'
+    ? { ...group, models: group.models.filter(model => allowed.has(model.id)) }
+    : group).filter(group => group.models.length > 0);
+  const copilotModels = groups.find(group => group.id === 'github-copilot')?.models ?? [];
+  const defaultModel = catalog.default?.provider === 'github-copilot' &&
+    !copilotModels.some(model => model.id === catalog.default?.model)
+    ? (copilotModels[0] ? { provider: 'github-copilot', model: copilotModels[0].id }
+      : groups[0]?.models[0] ? { provider: groups[0].id, model: groups[0].models[0].id }
+        : catalog.default)
+    : catalog.default;
+  return {
+    ...catalog,
+    groups,
+    routableProviders: catalog.routableProviders.filter(provider => provider !== 'github-copilot' || copilotModels.length > 0),
+    default: defaultModel,
+  };
+}
+
 export class CopilotController {
   private attempt?: { abort: AbortController; done: Promise<void> };
   private pending?: { id: string; resolve(value: string): void; reject(error: Error): void; cleanup(): void; prompt: Prompt };

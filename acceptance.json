@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "visibility": "private",
   "checks": {
     "unit": "passed",
@@ -11,12 +11,12 @@
     "repositoryTask": "passed",
     "restart": "passed",
     "credentialExclusion": "passed",
-    "ciWindows": "passed",
-    "ciLinux": "passed",
-    "ciMacos": "passed"
+    "ciWindows": "pending",
+    "ciLinux": "pending",
+    "ciMacos": "pending"
   },
   "sha256": {
-    "dist/dsh-copilot-auth-0.1.0-beta.1.tgz": "a4abeaae616a3c91de033a27304b8217df22e24ebfdcf77874b052c78a573a44",
-    "dist/dsh-github-repo-auth-0.1.0-beta.1.tgz": "9121c75d420e43dce88ee103407196cbe3bce92eaf4e655ee5945b87ddbfa1df"
+    "dist/dsh-copilot-auth-0.1.0-beta.2.tgz": "ac5bf5e5b7a7a6454e5368d0fc2230c06a7c07fb92b3271f2a0e24896fc827ec",
+    "dist/dsh-github-repo-auth-0.1.0-beta.2.tgz": "260dce7bb4cb6093ee558b4b7d9b9a00c0600ff1b33ce8f97aff71d53b861c3e"
   }
 }

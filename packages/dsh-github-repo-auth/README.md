@@ -3,7 +3,7 @@
 GitHub repository account sign-in using the official GitHub CLI.
 Requires Node.js 24+, Harness 0.1.5-alpha.1, and Git/gh on the host PATH.
 
-Install: `dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.1.tgz`, then restart.
+Install: `dsh plugin --profile web add ./dsh-github-repo-auth-0.1.0-beta.2.tgz`, then restart.
 Open Settings → GitHub to connect or inspect the existing CLI account.
 界面支持中英文。退出仓库账号会影响共用该 GitHub CLI 登录的其他工具，界面会先说明。
 Repository login and Copilot login are separate.

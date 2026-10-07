@@ -1,9 +1,12 @@
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 const output = resolve('dist'); await mkdir(output, { recursive: true });
+for (const name of await readdir(output)) {
+  if (name.endsWith('.tgz') || name === 'SHA256SUMS.txt') await unlink(resolve(output, name));
+}
 const npm = process.env.npm_execpath;
 if (!npm) throw new Error('Run with npm run pack.');
 for (const name of ['dsh-copilot-auth', 'dsh-github-repo-auth']) {

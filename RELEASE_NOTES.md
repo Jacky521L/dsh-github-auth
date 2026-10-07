@@ -1,4 +1,18 @@
-# v0.1.0-beta.1
+# v0.1.0-beta.2
+
+The Copilot plugin now filters Harness's model selector to the models granted to
+the signed-in Copilot account. Login, reconnect and sign-out refresh the selector;
+if a former Copilot default is no longer available, Harness chooses an available
+fallback while preserving the host's required catalog contract.
+
+Packaging now removes stale archives before generating checksums, so each Release
+contains hashes only for its own version. The official-profile installation test
+reads the workspace version instead of embedding an old archive name.
+
+Both standalone packages are shipped at beta.2. The repository authorization
+plugin has no behavior change in this update.
+
+## Original beta capabilities
 
 Two standalone plugins add Copilot account sign-in and GitHub repository account
 sign-in to the official Harness web app. Install either package or both; bilingual
